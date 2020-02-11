@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public int jumpHeight;
     bool canJump = true;
     int groundMask = 1<<8;
+    int lavaMask = 1<<9;
     // Start is called before the first frame update
     void Start()
     {
@@ -67,6 +68,16 @@ public class PlayerController : MonoBehaviour
 
         //apply updated velocity to the rigid body
         r.velocity = new Vector2(physicsVelocity.x, r.velocity.y);
+
+
+        //check if the player is on lava and should die
+        if (Physics2D.Raycast(new Vector2(
+                                        transform.position.x,
+                                        transform.position.y),
+                                        -Vector2.up, 1.0f, lavaMask))
+        {
+            Application.LoadLevel(Application.loadedLevel);
+        }
 
     }
 }
